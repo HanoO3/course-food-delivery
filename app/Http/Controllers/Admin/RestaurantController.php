@@ -6,6 +6,7 @@ use App\Notifications\RestaurantOwnerInvitation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Enums\RoleName;
 use App\Http\Requests\Admin\StoreRestaurantRequest;
+use App\Http\Requests\Admin\UpdateRestaurantRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\City;
@@ -79,4 +80,17 @@ public function edit(Restaurant $restaurant): Response
         'cities'     => City::get(['id', 'name']),
     ]);
 }
+public function update(UpdateRestaurantRequest $request, Restaurant $restaurant): RedirectResponse
+    {
+       
+        $validated = $request->validated();
+
+        
+        $restaurant->update($validated);
+
+
+        return redirect()
+            ->route('admin.restaurants.index')
+            ->with('success', 'Restaurant updated successfully!');
+    }
 }

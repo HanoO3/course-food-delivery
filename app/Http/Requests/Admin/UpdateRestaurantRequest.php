@@ -16,7 +16,7 @@ class UpdateRestaurantRequest extends FormRequest
     {
         return [
             'restaurant_name' => ['required', 'string', 'max:255'],
-            'city'            => ['required', 'numeric', 'exists:cities,id'],
+            'city_id'            => ['required', 'numeric', 'exists:cities,id'],
             'address'         => ['required', 'string', 'max:1000'],
         ];
     }
@@ -33,5 +33,7 @@ class UpdateRestaurantRequest extends FormRequest
  
     return to_route('admin.restaurants.index')
         ->withStatus('Restaurant updated successfully.');
+
+       
 }
 }
