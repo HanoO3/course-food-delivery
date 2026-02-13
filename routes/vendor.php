@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Vendor\MenuController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Vendor\CategoryController;   
+use App\Http\Controllers\Vendor\ProductController;
  
 Route::group([
     'prefix'     => 'vendor',
@@ -11,4 +13,6 @@ Route::group([
     Route::get('menu', [MenuController::class, 'index'])->name('menu');
     Route::resource('categories', CategoryController::class); 
     Route::resource('products', ProductController::class); 
+     
+
 });

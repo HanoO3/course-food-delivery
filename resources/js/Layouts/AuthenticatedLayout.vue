@@ -20,38 +20,38 @@ const showingNavigationDropdown = ref(false);
             <div class="flex">
               <!-- Logo -->
               <div class="flex shrink-0 items-center">
-                <Link :href="route('dashboard')">
+                <Link :href="route('home')"> 
                   <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800" />
                 </Link>
               </div>
 
               <!-- Navigation Links (Desktop) -->
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                  Dashboard
+                <!-- Changed Dashboard to Home -->
+                <NavLink :href="route('home')" :active="route().current('home')">
+                  Home
                 </NavLink>
 
                 <NavLink
-                  
-                   
-
-                   v-if="can('restaurant.viewAny')" 
-
-
+                  v-if="can('restaurant.viewAny')" 
                   :href="route('admin.restaurants.index')"
                   :active="route().current('admin.restaurants.index')"
                 >
                   Restaurants
                 </NavLink>
+
                 <NavLink 
-                   v-if="can('product.viewAny') && can('category.viewAny')" 
-                   :href="route('vendor.menu')" 
-                   :active="route().current('vendor.menu')">Restaurant menu 
+                  v-if="can('product.viewAny') && can('category.viewAny')" 
+                  :href="route('vendor.menu')" 
+                  :active="route().current('vendor.menu')"
+                >
+                  Restaurant menu 
                 </NavLink> 
               </div>
             </div>
 
-            <div class="hidden sm:ms-6 sm:flex sm:items-center">
+            <!-- Desktop: Authenticated user dropdown OR Guest Login/Register -->
+            <div v-if="$page.props.auth.user" class="hidden sm:flex sm:items-center sm:ms-6">
               <!-- Settings Dropdown -->
               <div class="relative ms-3">
                 <Dropdown align="right" width="48">
@@ -86,6 +86,12 @@ const showingNavigationDropdown = ref(false);
               </div>
             </div>
 
+            <!-- Guest buttons (Login/Register) -->
+            <div v-else class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+              <Link :href="route('login')" class="btn btn-secondary">Login</Link>
+              <Link :href="route('register')" class="btn btn-primary">Register</Link>
+            </div>
+
             <!-- Hamburger (Mobile) -->
             <div class="-me-2 flex items-center sm:hidden">
               <button
@@ -116,20 +122,30 @@ const showingNavigationDropdown = ref(false);
         <!-- Responsive Navigation Menu (Mobile) -->
         <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden">
           <div class="space-y-1 pb-3 pt-2">
-            <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-              Dashboard
+            <!-- Changed Dashboard to Home -->
+            <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
+              Home
             </ResponsiveNavLink>
 
             <ResponsiveNavLink
+              v-if="can('restaurant.viewAny')"
               :href="route('admin.restaurants.index')"
               :active="route().current('admin.restaurants.index')"
             >
               Restaurants
             </ResponsiveNavLink>
+
+            <ResponsiveNavLink 
+              v-if="can('product.viewAny') && can('category.viewAny')" 
+              :href="route('vendor.menu')" 
+              :active="route().current('vendor.menu')"
+            >
+              Restaurant menu 
+            </ResponsiveNavLink>
           </div>
 
-          <!-- Responsive Settings Options -->
-          <div class="border-t border-gray-200 pb-1 pt-4">
+          <!-- Responsive Settings Options - Only for authenticated users -->
+          <div v-if="$page.props.auth.user" class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
               <div class="text-base font-medium text-gray-800">{{ $page.props.auth.user.name }}</div>
               <div class="text-sm font-medium text-gray-500">{{ $page.props.auth.user.email }}</div>
@@ -152,13 +168,11 @@ const showingNavigationDropdown = ref(false);
 
       <!-- Page Content -->
       <main>
-
-
-       <div v-if="$page.props.success" class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8"> 
-    <div class="alert alert-success bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded">
-        {{ $page.props.success }}
-    </div> 
-</div> 
+        <div v-if="$page.props.success" class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8"> 
+          <div class="alert alert-success bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded">
+            {{ $page.props.success }}
+          </div> 
+        </div> 
         <slot />
       </main>
     </div>
