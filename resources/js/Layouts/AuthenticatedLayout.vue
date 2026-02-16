@@ -27,7 +27,6 @@ const showingNavigationDropdown = ref(false);
 
               <!-- Navigation Links (Desktop) -->
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                <!-- Changed Dashboard to Home -->
                 <NavLink :href="route('home')" :active="route().current('home')">
                   Home
                 </NavLink>
@@ -51,7 +50,16 @@ const showingNavigationDropdown = ref(false);
             </div>
 
             <!-- Desktop: Authenticated user dropdown OR Guest Login/Register -->
-            <div v-if="$page.props.auth.user" class="hidden sm:flex sm:items-center sm:ms-6">
+            <div v-if="$page.props.auth?.user" class="hidden sm:flex sm:items-center sm:ms-6">
+              <Link
+                v-if="can('cart.add')"
+                :href="route('customer.cart.index')"
+                class="btn btn-primary"
+              >
+               View basket {{ (($page.props.flash?.cart?.total ?? 0) / 100).toFixed(2) }} €
+
+              </Link>
+
               <!-- Settings Dropdown -->
               <div class="relative ms-3">
                 <Dropdown align="right" width="48">
@@ -61,7 +69,7 @@ const showingNavigationDropdown = ref(false);
                         type="button"
                         class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                       >
-                        {{ $page.props.auth.user.name }}
+                        {{ $page.props.auth?.user?.name ?? 'Guest' }}
                         <svg
                           class="-me-0.5 ms-2 h-4 w-4"
                           xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +130,6 @@ const showingNavigationDropdown = ref(false);
         <!-- Responsive Navigation Menu (Mobile) -->
         <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden">
           <div class="space-y-1 pb-3 pt-2">
-            <!-- Changed Dashboard to Home -->
             <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
               Home
             </ResponsiveNavLink>
@@ -145,10 +152,10 @@ const showingNavigationDropdown = ref(false);
           </div>
 
           <!-- Responsive Settings Options - Only for authenticated users -->
-          <div v-if="$page.props.auth.user" class="pt-4 pb-1 border-t border-gray-200">
+          <div v-if="$page.props.auth?.user" class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-              <div class="text-base font-medium text-gray-800">{{ $page.props.auth.user.name }}</div>
-              <div class="text-sm font-medium text-gray-500">{{ $page.props.auth.user.email }}</div>
+              <div class="text-base font-medium text-gray-800">{{ $page.props.auth?.user?.name ?? 'Guest' }}</div>
+              <div class="text-sm font-medium text-gray-500">{{ $page.props.auth?.user?.email ?? '' }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

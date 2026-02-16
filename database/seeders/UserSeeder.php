@@ -18,6 +18,8 @@ class UserSeeder extends Seeder
     {
         $this->createAdminUser();
         $this->createVendorUser(); 
+        $this->createCustomerUser(); 
+
     }
  
     public function createAdminUser()
@@ -45,4 +47,15 @@ class UserSeeder extends Seeder
             'address' => 'Address SJV14', 
         ]); 
     } 
+
+    public function createCustomerUser() 
+{ 
+    $vendor = User::create([ 
+        'name'     => 'Loyal Customer', 
+        'email'    => 'customer@admin.com', 
+        'password' => bcrypt('password'), 
+    ]); 
+ 
+    $vendor->roles()->sync(Role::where('name', RoleName::CUSTOMER->value)->first()); 
+} 
 }

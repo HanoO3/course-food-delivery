@@ -24,7 +24,7 @@ defineProps({
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                     
-                    <!-- Success Message (just like your screenshot) -->
+                    
                     <div v-if="page.props.flash?.success" 
                          class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
                         {{ page.props.flash.success }}

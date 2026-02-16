@@ -1,15 +1,18 @@
 import { usePage } from '@inertiajs/vue3'
- 
+
 export const Can = {
-  install: (v) => {
-    const page = usePage()
- 
+  install: (app) => {
     const can = (permission) => {
-      return page.props.auth.permissions.includes(permission)
+      const page = usePage()               
+      return page.props.auth?.permissions?.includes(permission) ?? false
     }
- 
-    v.mixin({
+
+    
+    app.mixin({
       methods: { can }
     })
+
+   
+    app.config.globalProperties.$can = can
   }
 }
