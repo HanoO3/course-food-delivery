@@ -19,6 +19,10 @@ const cart = computed(() => page.props.flash?.cart ?? {
 const form = useForm({
   product: {}
 })
+
+const placeOrder = () => {
+  form.post(route('customer.orders.store'))
+}
  
 const removeProduct = (uuid) => {
   form.post(route('customer.cart.remove', uuid), { preserveScroll: true })
@@ -73,7 +77,8 @@ const removeProduct = (uuid) => {
               <div>{{ (cart.total / 100).toFixed(2) }} &euro;</div>
             </div>
             <div class="mt-4" v-if="cart.items.length">
-              <PrimaryButton type="button">Place Order</PrimaryButton>
+                  <PrimaryButton type="button" @click="placeOrder">Place Order</PrimaryButton>
+
             </div>
           </div>
         </div>
