@@ -32,7 +32,7 @@ class OrderController extends Controller
         $user       = $request->user();
         $attributes = $request->validated();
  
-        DB::transaction(function () use ($user, $attributes) {
+        $order = DB::transaction(function () use ($user, $attributes) {
             $order = $user->orders()->create([
                 'restaurant_id' => $attributes['restaurant_id'],
                 'total'         => $attributes['total'],
@@ -40,8 +40,9 @@ class OrderController extends Controller
             ]);
  
             $order->products()->createMany($attributes['items']);
+            return $order;
         });
- 
+        $order->restaurant->owner->notify(new NewOrderCreated($order));
         session()->forget('cart');
  
     return redirect()->route('customer.orders.index')
